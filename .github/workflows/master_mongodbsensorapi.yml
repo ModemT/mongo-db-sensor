@@ -61,3 +61,6 @@ jobs:
           app-name: 'mongodbsensorapi'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_537F44CD7D874721A057AB1AD7B9A987 }}
+      
+      - name: "start service"
+        run: gunicorn -w 2 -k uvicorn.workers.UvicornWorker app:app
