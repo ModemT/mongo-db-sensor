@@ -60,14 +60,14 @@ async def create_many_records(
         print(sensor_docs)
 
         # Insert multiple documents into collection
-        result = collection.insert_many(jsonable_encoder(sensor_docs))
+        result = collection.insert_many(sensor_docs)
         
         # Return the IDs of the inserted documents
         return {'inserted_ids': [str(i) for i in result.inserted_ids]}
 
     except Exception as e:
         print(traceback.format_exc())
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=traceback.format_exc())
 
 # @app.post("/add", response_description="Add one sensor")
 # async def create_one_record():
