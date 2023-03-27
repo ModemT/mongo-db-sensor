@@ -34,18 +34,19 @@ class PyObjectId(ObjectId):
 
 class SensorData(BaseModel):
     timestamp: str = Field(default_factory=lambda: str(datetime.utcnow()))
-    sensor_1: int = Field(...)
-    sensor_2: int = Field(...)
-    sensor_3: int = Field(...)
-    sensor_4: int = Field(...)
-    sensor_5: int = Field(...)
-    sensor_6: int = Field(...)
-    sensor_7: int = Field(...)
-    sensor_8: int = Field(...)
-    sensor_9: int = Field(...)
+    sensor_1: float = Field(...)
+    sensor_2: float = Field(...)
+    sensor_3: float = Field(...)
+    sensor_4: float = Field(...)
+    sensor_5: float = Field(...)
+    sensor_6: float = Field(...)
+    sensor_7: float = Field(...)
+    sensor_8: float = Field(...)
+    sensor_9: float = Field(...)
+    sensor_10: float = Field(...)
 
 @app.post("/add_many/{collection}/{db}", response_description="Add many sensors")
-async def create_many_records(
+async def add_many_sensors(
     collection: str,
     db: str,
     sensors: List[SensorData] = Body(...),
