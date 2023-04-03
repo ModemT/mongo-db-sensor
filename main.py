@@ -79,8 +79,8 @@ async def add_many_sensors(
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=traceback.format_exc())
     
 
-@app.post("/add_many/patient/{collection}/{db}", response_description="Add many sensors")
-async def add_many_sensors(
+@app.post("/add_many/patient/{db}/{collection}", response_description="Add many sensors")
+async def add_patients(
     collection: str,
     db: str,
     sensors: List[PatientData] = Body(...),
