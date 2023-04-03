@@ -4,6 +4,7 @@ from fastapi.responses import Response, JSONResponse
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel, Field, EmailStr
 from bson import ObjectId
+from bson.json_util import dumps
 from typing import Optional, List
 from pymongo import MongoClient
 from datetime import datetime
@@ -69,6 +70,20 @@ async def add_many_sensors(
     except Exception as e:
         print(traceback.format_exc())
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=traceback.format_exc())
+    
+
+@app.get("/all/{db}/{collection}", response_description="Retrieve all records within collection")
+async def retrieve_all_records(db: str, collection: str):
+    client = MongoClient(mongo_uri)
+    db = client[db]
+    collection = db[collection]
+
+    # Find all documents in the collection and convert them to a JSON string
+    cursor = collection.find({})
+    json_docs = dumps(cursor)
+
+    return json_docs
+
 
 # @app.post("/add", response_description="Add one sensor")
 # async def create_one_record():
@@ -78,9 +93,7 @@ async def add_many_sensors(
 # async def retreive_one_record():
 #     pass
 
-# @app.get("/all", response_description="Add one sensor")
-# async def retreive_one_record():
-#     pass
+
 
 # @app.put("/update/{id}", response_description="Add one sensor")
 # async def update_one():
