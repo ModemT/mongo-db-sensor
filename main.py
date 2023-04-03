@@ -114,7 +114,7 @@ async def retrieve_all_records(db: str, collection: str):
     cursor = collection.find({})
     json_docs = dumps(cursor)
 
-    return JSONResponse(content=json_docs)
+    return JSONResponse(content=json.loads(json_docs))
 
 
 
