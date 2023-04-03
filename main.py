@@ -46,6 +46,13 @@ class SensorData(BaseModel):
     sensor_9: float = Field(...)
     sensor_10: float = Field(...)
 
+class PatientData(BaseModel):
+    id: str = Field(...)
+    Name: str = Field(...)
+    Age: str = Field(...)
+    Address: str = Field(...)
+    Status: str = Field(...)
+
 @app.post("/add_many/{collection}/{db}", response_description="Add many sensors")
 async def add_many_sensors(
     collection: str,
@@ -72,6 +79,31 @@ async def add_many_sensors(
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=traceback.format_exc())
     
 
+@app.post("/add_many/patient/{collection}/{db}", response_description="Add many sensors")
+async def add_many_sensors(
+    collection: str,
+    db: str,
+    sensors: List[PatientData] = Body(...),
+):
+    db_client = MongoClient(mongo_uri)
+    db = db_client[db]
+    collection = db[collection]
+
+    try:
+        # Convert sensor data to JSON compatible format
+        sensor_docs = jsonable_encoder(sensors)
+        print(sensor_docs)
+
+        # Insert multiple documents into collection
+        result = collection.insert_many(sensor_docs)
+        
+        # Return the IDs of the inserted documents
+        return {'inserted_ids': [str(i) for i in result.inserted_ids]}
+
+    except Exception as e:
+        print(traceback.format_exc())
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=traceback.format_exc())
+
 @app.get("/all/{db}/{collection}", response_description="Retrieve all records within collection")
 async def retrieve_all_records(db: str, collection: str):
     client = MongoClient(mongo_uri)
@@ -82,7 +114,8 @@ async def retrieve_all_records(db: str, collection: str):
     cursor = collection.find({})
     json_docs = dumps(cursor)
 
-    return json_docs
+    return JSONResponse(content=json_docs)
+
 
 
 # @app.post("/add", response_description="Add one sensor")
