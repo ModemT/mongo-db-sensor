@@ -49,7 +49,7 @@ class SensorData(BaseModel):
 class PatientData(BaseModel):
     id: int = Field(...)
     Name: str = Field(...)
-    Age: str = Field(...)
+    Age: int = Field(...)
     Address: str = Field(...)
     Status: str = Field(...)
 
