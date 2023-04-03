@@ -47,7 +47,7 @@ class SensorData(BaseModel):
     sensor_10: float = Field(...)
 
 class PatientData(BaseModel):
-    id: str = Field(...)
+    id: int = Field(...)
     Name: str = Field(...)
     Age: str = Field(...)
     Address: str = Field(...)
