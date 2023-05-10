@@ -66,8 +66,6 @@ async def add_many_sensors(
     try:
         # Convert sensor data to JSON compatible format
         sensor_docs = jsonable_encoder(sensors)
-        print(sensor_docs)
-
         # Insert multiple documents into collection
         result = collection.insert_many(sensor_docs)
         
