@@ -52,6 +52,9 @@ class PatientData(BaseModel):
     Age: int = Field(...)
     Address: str = Field(...)
     Status: str = Field(...)
+    Condition: str = Field(...)
+    Diagnosis: str = Field(...)
+    
 
 @app.post("/add_many/{collection}/{db}", response_description="Add many sensors")
 async def add_many_sensors(
